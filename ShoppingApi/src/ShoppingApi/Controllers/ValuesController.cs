@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Akka.Actor;
 using Microsoft.AspNetCore.Mvc;
+using ShoppingApi.Shared.Basket;
 
 namespace ShoppingApi.Controllers
 {
@@ -10,10 +12,16 @@ namespace ShoppingApi.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+        private readonly IActorRef _actor;
+        public ValuesController(IActorRef actor)
+        {
+            _actor = actor;
+        }
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
+            _actor.Tell(new Create(Guid.NewGuid()));
             return new string[] { "value1", "value2" };
         }
 

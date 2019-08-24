@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Akka" Version="1.3.14" />
+    <PackageReference Include="Akka.Remote" Version="1.3.14" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.4.10" />
@@ -15,6 +16,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ShoppingApi.Shared\ShoppingApi.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="akka-client.conf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

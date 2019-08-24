@@ -6,8 +6,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using ShoppingApi.AkkaServer.Basket;
-    using static ShoppingApi.AkkaServer.Basket.Events;
+    using static ShoppingApi.Shared.Basket.Events;
 
     public class Actor : ReceiveActor
     {
@@ -19,6 +18,7 @@
             {
                 var cart = new Cart() { CustomerId = command.CustomerId, Id = command.Id };
                 _baskets.Add(cart.Id, cart);
+                Sender.Tell(new Success());
             });
 
             Receive<GetById>(query =>

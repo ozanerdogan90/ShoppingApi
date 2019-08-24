@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Akka.Actor;
+﻿using Akka.Actor;
+using Akka.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using System.IO;
 
 namespace ShoppingApi
 {
@@ -28,15 +24,15 @@ namespace ShoppingApi
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddSingleton<ActorSystem>(ctx =>
             {
-                return ActorSystem.Create("Actors");
+                return ActorSystem.Create("ShoppingApiAkkaServer", LoadConfig("akka-client.conf"));
             });
 
-            //services.AddSingleton<IActorRef>(provider =>
-            //{
-            //    var actorSystem = provider.GetService<ActorSystem>();
-            //    var actor = actorSystem.ActorOf(Props.Create(() => new Shared.Basket.Actor()));
-            //    return actor;
-            //});
+            services.AddSingleton<IActorRef>(provider =>
+            {
+                var actorSystem = provider.GetService<ActorSystem>();
+                var actor = actorSystem.ActorOf(Props.Create(() => new Shared.Client.Actor()), "BasketActor");
+                return actor;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,6 +53,17 @@ namespace ShoppingApi
             {
                 app.ApplicationServices.GetService<ActorSystem>().Terminate().Wait();
             });
+        }
+
+        private Config LoadConfig(string configFile)
+        {
+            if (File.Exists(configFile))
+            {
+                string config = File.ReadAllText(configFile);
+                return ConfigurationFactory.ParseString(config);
+            }
+
+            return Config.Empty;
         }
     }
 }
