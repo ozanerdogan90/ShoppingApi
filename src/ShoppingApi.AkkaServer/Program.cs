@@ -13,7 +13,7 @@ namespace ShoppingApi.AkkaServer
             {
                 system.ActorOf(Props.Create(() => new AkkaServer.Warehouse.Actor()), "WarehouseActor");
                 system.ActorOf(Props.Create(() => new AkkaServer.Basket.Actor()), "BasketActor");
-
+                Console.WriteLine("waiting");
                 Console.ReadLine();
             }
         }

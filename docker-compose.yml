@@ -1,0 +1,22 @@
+version: '3'
+services:
+  akka-server:
+    build:
+      context: .
+      dockerfile: Dockerfile-akka-server
+    container_name: akka-server
+    ports:
+      - 8081:8081
+    restart: on-failure
+    tty: true
+  api:
+    build:
+      context: .
+    container_name: shopping-api
+    ports:
+      - 5001:5001
+    restart: on-failure
+    environment:
+      - ASPNETCORE_URLS=http://+:5001
+    depends_on:
+      - akka-server
