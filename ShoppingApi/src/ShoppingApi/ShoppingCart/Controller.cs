@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Halcyon.HAL;
+using Halcyon.Web.HAL;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using ShoppingApi.Tools;
 using System;
@@ -20,14 +22,19 @@ namespace ShoppingApi.ShoppingCart
         public async Task<IActionResult> Create()
         {
             var result = await _service.Create();
-            return Ok(result);
+
+            return this.HAL(new { id = result }, new Link[] {
+            new Link("self", $"api/shopping-carts/{result}"),
+        });
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Get([NotEmptyGuid]Guid id)
         {
             var result = await _service.GetById(id);
-            return Ok(result);
+            return this.HAL(result, new Link[] {
+            new Link("self", $"api/shopping-carts/{result.Id}"),
+              });
         }
 
         [HttpPost("{id}")]
