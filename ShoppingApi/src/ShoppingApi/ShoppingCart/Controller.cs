@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using ShoppingApi.Tools;
 using System;
 using System.Threading.Tasks;
 
@@ -22,21 +24,21 @@ namespace ShoppingApi.ShoppingCart
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(Guid id)
+        public async Task<IActionResult> Get([NotEmptyGuid]Guid id)
         {
             var result = await _service.GetById(id);
             return Ok(result);
         }
 
         [HttpPost("{id}")]
-        public async Task<IActionResult> AddItem(Guid id, [FromBody] ProductDTO product)
+        public async Task<IActionResult> AddItem([NotEmptyGuid]Guid id, [BindRequired, FromBody] ProductDTO product)
         {
             await _service.AddItem(id, product);
             return Ok();
         }
 
         [HttpDelete("{id}/products/{productId}")]
-        public async Task<IActionResult> DeleteItem(Guid id, Guid productId)
+        public async Task<IActionResult> DeleteItem([NotEmptyGuid]Guid id, [NotEmptyGuid] Guid productId)
         {
             await _service.DeleteItem(id, productId);
             return Ok();
@@ -44,7 +46,7 @@ namespace ShoppingApi.ShoppingCart
 
 
         [HttpPost("{id}/purchase")]
-        public async Task<IActionResult> Purchase(Guid id)
+        public async Task<IActionResult> Purchase([NotEmptyGuid]Guid id)
         {
             //// will skip payment and other validations
             await _service.Purchase(id);

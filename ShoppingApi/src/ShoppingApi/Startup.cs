@@ -1,13 +1,20 @@
 ﻿using Akka.Actor;
 using Akka.Configuration;
 using AutoMapper;
+using CorrelationId;
+using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using ShoppingApi.ShoppingCart;
+using ShoppingApi.Tools;
+using Swashbuckle.AspNetCore.Swagger;
+using System;
 using System.IO;
+using System.Reflection;
 
 namespace ShoppingApi
 {
@@ -23,28 +30,47 @@ namespace ShoppingApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddSingleton<ActorSystem>(ctx =>
             {
-                return ActorSystem.Create("ShoppingApiAkkaServer", LoadConfig("akka-client.conf"));
+                var name = Configuration["Akka:ActorSystemName"];
+                var configPath = Configuration["Akka:ConfigPath"];
+                return ActorSystem.Create(name, LoadConfig(configPath));
             });
-
-            services.AddSingleton<IActorRef>(provider =>
-            {
-                var actorSystem = provider.GetService<ActorSystem>();
-                var actor = actorSystem.ActorOf(Props.Create(() => new Shared.Client.Actor()), "BasketActor");
-                return actor;
-            });
-
             services.AddSingleton<ActorSelection>(provider =>
             {
                 var actorSystem = provider.GetService<ActorSystem>();
-
-                return actorSystem.ActorSelection("akka.tcp://ShoppingApiAkkaServer@localhost:8081/user/BasketActor");
+                var remotePath = Configuration["Akka:RemotePath"];
+                return actorSystem.ActorSelection(remotePath);
             });
 
+            services.AddCorrelationId();
+              AddAutoMapperServices(services);
+            AddSwaggerServices(services);
+            services.AddResponseCompression();
+            services.AddProblemDetails();
+      
             services.AddScoped<IService, Service>();
-            AddAutoMapperServices(services);
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(typeof(CustomExceptionFilter));
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+        }
+
+        private IServiceCollection AddSwaggerServices(IServiceCollection services)
+        {
+            return services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info
+                {
+                    Version = "v1",
+                    Title = "Shopping Api",
+                    Description = "A simple shopping api uses akka",
+                });
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
         }
 
         private IServiceCollection AddAutoMapperServices(IServiceCollection services)
@@ -60,14 +86,34 @@ namespace ShoppingApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime lifetime)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime lifetime, ILoggerFactory builder)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseMvc();
+            builder.AddConsole();
+            app.UseCors(x => x
+                  .AllowAnyOrigin()
+                  .AllowAnyMethod()
+                  .AllowAnyHeader())
+      .UseAuthentication()
+      .UseMiddleware<ApiLoggingMiddleware>()
+      .UseCorrelationId(new CorrelationIdOptions
+      {
+          Header = "X-Correlation-ID",
+          UseGuidForCorrelationId = true,
+          UpdateTraceIdentifier = true,
+          IncludeInResponse = true
+      })
+      .UseSwagger()
+      .UseSwaggerUI(c =>
+      {
+          c.SwaggerEndpoint("/swagger/v1/swagger.json", "Shopping Api v1");
+          c.DocumentTitle = "Shopping Api Swagger Ui";
+      })
+      .UseResponseCompression()
+      .UseProblemDetails().UseMvc() ;
 
             lifetime.ApplicationStarted.Register(() =>
             {

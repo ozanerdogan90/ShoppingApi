@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace ShoppingApi.Shared.Models
 {
@@ -8,6 +7,18 @@ namespace ShoppingApi.Shared.Models
     {
         public int DailyCapacity { get; set; }
         public List<ProductCapacity> ProductCapacities { get; set; }
+
+        //// dummy data to test
+        public static Lazy<Warehouse> Instance = new Lazy<Warehouse>(new Warehouse()
+        {
+            DailyCapacity = 10,
+            ProductCapacities = new List<ProductCapacity>() {
+            new ProductCapacity(){
+                ProductId=Guid.Parse("c1972fbd-72cc-40aa-aa07-769c7f01f300"),
+                Capacity=5
+            }
+        }
+        });
     }
     public class ProductCapacity
     {

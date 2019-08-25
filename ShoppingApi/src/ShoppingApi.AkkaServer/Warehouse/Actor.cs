@@ -10,11 +10,36 @@
         private State _state;
         public Actor()
         {
-            _state = new State();
+            _state = State.Instance.Value;
+
+            Receive<Product>(query =>
+            {
+                if (_state.DailyCapacity - query.Quantity < 0)
+                {
+                    Sender.Tell(new DailyLimitOver());
+                    return;
+                }
+
+                var product = _state.ProductCapacities.FirstOrDefault(x => x.ProductId == query.Id);
+                if (product == null)
+                {
+                    Sender.Tell(new ProductNotFound());
+                    return;
+                }
+
+                if (product.Capacity - query.Quantity < 0)
+                {
+                    Sender.Tell(new InsufficientProduct());
+                    return;
+                }
+
+                Sender.Tell(new Success());
+
+            });
 
             Receive<Cart>(command =>
             {
-                if (!(_state.DailyCapacity - command.Products.Sum(x => x.Quantity) < 0))
+                if (_state.DailyCapacity - command.Products.Sum(x => x.Quantity) < 0)
                 {
                     Sender.Tell(new DailyLimitOver());
                     return;
