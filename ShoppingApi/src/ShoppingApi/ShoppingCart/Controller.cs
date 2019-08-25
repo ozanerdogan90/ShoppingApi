@@ -18,6 +18,12 @@ namespace ShoppingApi.ShoppingCart
             _service = service;
         }
 
+        /// <summary>
+        /// Creates a new shopping cart
+        /// </summary>
+        /// <returns>A shopping cart Id and resource links</returns>
+        /// <response code="200">Success</response>
+        /// <response code="500">If something goes wrong</response>  
         [HttpPost()]
         public async Task<IActionResult> Create()
         {
@@ -28,6 +34,14 @@ namespace ShoppingApi.ShoppingCart
         });
         }
 
+        /// <summary>
+        /// Gets cart by id 
+        /// </summary>
+        /// <param name="id">Shopping cart id</param>
+        /// <returns>Cart details</returns>
+        /// <response code="200">Success</response>
+        /// <response code="404">Invalid id</response>
+        /// <response code="500">If something goes wrong</response>  
         [HttpGet("{id}")]
         public async Task<IActionResult> Get([NotEmptyGuid]Guid id)
         {
@@ -37,6 +51,15 @@ namespace ShoppingApi.ShoppingCart
               });
         }
 
+        /// <summary>
+        /// Adds new item to existing cart
+        /// </summary>
+        /// <param name="id">Cart id</param>
+        /// <param name="product">Product details</param>
+        /// <response code="200">Success</response>
+        /// <response code="400">Shopping cart or product doesnt exist in system</response>
+        /// <response code="404">Invalid id or product model</response>
+        /// <response code="500">If something goes wrong</response>  
         [HttpPost("{id}")]
         public async Task<IActionResult> AddItem([NotEmptyGuid]Guid id, [BindRequired, FromBody] ProductDTO product)
         {
@@ -44,6 +67,14 @@ namespace ShoppingApi.ShoppingCart
             return Ok();
         }
 
+        /// <summary>
+        /// Deletes item from shopping cart
+        /// </summary>
+        /// <param name="id">Cart id</param>
+        /// <param name="productId">Product id</param>
+        /// <response code="200">Success</response>
+        /// <response code="404">Invalid id or product model</response>
+        /// <response code="500">If something goes wrong</response>  
         [HttpDelete("{id}/products/{productId}")]
         public async Task<IActionResult> DeleteItem([NotEmptyGuid]Guid id, [NotEmptyGuid] Guid productId)
         {
@@ -52,6 +83,13 @@ namespace ShoppingApi.ShoppingCart
         }
 
 
+        /// <summary>
+        /// Purchases items
+        /// </summary>
+        /// <param name="id">Cart id</param>
+        /// <response code="200">Success</response>
+        /// <response code="404">Invalid id</response>
+        /// <response code="500">If something goes wrong</response> 
         [HttpPost("{id}/purchase")]
         public async Task<IActionResult> Purchase([NotEmptyGuid]Guid id)
         {

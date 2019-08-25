@@ -66,7 +66,7 @@ namespace ShoppingApi.Tools
                 case var _ when ex is CartNotFoundException:
                     return (int)HttpStatusCode.NotFound;
                 case var _ when ex is ArgumentException:
-                    return (int)HttpStatusCode.BadRequest;
+                    return (int)HttpStatusCode.NotFound;
                 default:
                     return (int)HttpStatusCode.InternalServerError;
             }
