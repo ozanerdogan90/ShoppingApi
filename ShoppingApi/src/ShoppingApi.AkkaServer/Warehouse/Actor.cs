@@ -1,8 +1,9 @@
-﻿namespace ShoppingApi.Shared.Warehouse
+﻿namespace ShoppingApi.AkkaServer.Warehouse
 {
     using Akka.Actor;
+    using ShoppingApi.Shared.Models;
     using System.Linq;
-    using static ShoppingApi.Shared.Warehouse.Events;
+    using static ShoppingApi.AkkaServer.Warehouse.Events;
     using State = Shared.Models.Warehouse;
     public class Actor : ReceiveActor
     {
@@ -11,7 +12,7 @@
         {
             _state = new State();
 
-            Receive<Purchase>(command =>
+            Receive<Cart>(command =>
             {
                 if (!(_state.DailyCapacity - command.Products.Sum(x => x.Quantity) < 0))
                 {

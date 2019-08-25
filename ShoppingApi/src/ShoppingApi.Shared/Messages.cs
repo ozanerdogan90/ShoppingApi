@@ -5,14 +5,12 @@
 
     public class Create
     {
-        public Create(Guid customerId)
+        public Create(Guid sessionId)
         {
-            CustomerId = customerId;
-            Id = Guid.NewGuid();
+            SessionId = sessionId;
         }
 
-        public Guid Id { get; }
-        public Guid CustomerId { get; }
+        public Guid SessionId { get; }
     }
 
     public class GetAll { }
@@ -29,24 +27,33 @@
 
     public class AddProduct
     {
-        public AddProduct(Guid basketId, Product product)
+        public AddProduct(Guid sessionId, Product product)
         {
-            CartId = basketId;
+            SessionId = sessionId;
             Product = product;
         }
 
-        public Guid CartId { get; set; }
+        public Guid SessionId { get; set; }
         public Product Product { get; set; }
     }
     public class RemoveProduct
     {
-        public RemoveProduct(Guid basketId, Guid productId)
+        public RemoveProduct(Guid sessionId, Guid productId)
         {
-            CartId = basketId;
+            SessionId = sessionId;
             ProductId = productId;
         }
 
-        public Guid CartId { get; set; }
+        public Guid SessionId { get; set; }
         public Guid ProductId { get; set; }
+    }
+
+    public class Purchase
+    {
+        public Purchase(Guid sessionId)
+        {
+            SessionId = sessionId;
+        }
+        public Guid SessionId { get; set; }
     }
 }

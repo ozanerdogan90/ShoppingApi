@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ShoppingApi.Shared.Basket
+namespace ShoppingApi.AkkaServer.Basket
 {
     public class Events
     {

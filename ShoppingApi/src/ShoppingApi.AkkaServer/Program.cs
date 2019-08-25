@@ -11,8 +11,8 @@ namespace ShoppingApi.AkkaServer
         {
             using (var system = ActorSystem.Create("ShoppingApiAkkaServer", LoadConfig("akka-server.conf")))
             {
-                system.ActorOf(Props.Create(() => new Shared.Warehouse.Actor()), "WarehouseActor");
-                system.ActorOf(Props.Create(() => new Shared.Basket.Actor()), "BasketActor");
+                system.ActorOf(Props.Create(() => new AkkaServer.Warehouse.Actor()), "WarehouseActor");
+                system.ActorOf(Props.Create(() => new AkkaServer.Basket.Actor()), "BasketActor");
 
                 Console.ReadLine();
             }

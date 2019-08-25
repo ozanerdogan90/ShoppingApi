@@ -9,9 +9,10 @@ namespace ShoppingApi.Shared.Models
         public Cart()
         {
             Products = new List<Product>();
+            CreatedAt = DateTime.UtcNow;
         }
         public Guid Id { get; set; }
-        public Guid CustomerId { get; set; }
         public List<Product> Products { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
 }
