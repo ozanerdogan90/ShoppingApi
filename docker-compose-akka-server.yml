@@ -1,0 +1,11 @@
+version: '3'
+services:
+  akka-server:
+    build:
+      context: .
+      dockerfile: Dockerfile-akka-server
+    container_name: akka-server
+    ports:
+      - 8081:8081
+    restart: on-failure
+    tty: true
