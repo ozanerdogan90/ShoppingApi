@@ -3,7 +3,9 @@
 > .Net Core 2.2, Akka.net , Docker
 
 ## Description
-This project aims to create shopping cart and inventory management application via using akka.net actors 
+This project aims to create shopping cart and inventory management application via using akka.net actors.
+Akka server is used as distributed command bus with multiple instance of actors and shopping api reaches this actors by akka remote connection.
+For each adding product and purchase actions, warehouse actor checks daily warehouse product limit and product stock limit and if the limits are excess server will return failure
 
 ## Features
 ##### Framework
@@ -55,3 +57,6 @@ dotnet test ./tests/ShoppingApi.AkkaServer.Tests/ShoppingApi.AkkaServer.Tests.cs
 
 ### TO-DO List
 - There is no storage layer. Akka is able to persist info but its not configure yet
+
+### Feature List
+- Return product details
