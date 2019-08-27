@@ -7,9 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingApi", "src\Shopping
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{CACAEA30-3818-4FF6-8695-7774571306ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingApi.AkkaServer", "src\ShoppingApi.AkkaServer\ShoppingApi.AkkaServer.csproj", "{317175F8-E8A1-4DAD-801A-00AC2D8848CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingApi.AkkaServer", "src\ShoppingApi.AkkaServer\ShoppingApi.AkkaServer.csproj", "{317175F8-E8A1-4DAD-801A-00AC2D8848CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingApi.Shared", "src\ShoppingApi.Shared\ShoppingApi.Shared.csproj", "{3040828A-9181-46C7-9A9B-15BC0A3456D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingApi.Shared", "src\ShoppingApi.Shared\ShoppingApi.Shared.csproj", "{3040828A-9181-46C7-9A9B-15BC0A3456D2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{1331833F-34BB-45C7-8B10-14D81B567420}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingApi.AkkaServer.Tests", "tests\ShoppingApi.AkkaServer.Tests\ShoppingApi.AkkaServer.Tests.csproj", "{C8686CCA-F7F5-4A49-9FDC-36712579536A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +33,10 @@ Global
 		{3040828A-9181-46C7-9A9B-15BC0A3456D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3040828A-9181-46C7-9A9B-15BC0A3456D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3040828A-9181-46C7-9A9B-15BC0A3456D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8686CCA-F7F5-4A49-9FDC-36712579536A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8686CCA-F7F5-4A49-9FDC-36712579536A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8686CCA-F7F5-4A49-9FDC-36712579536A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8686CCA-F7F5-4A49-9FDC-36712579536A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -37,6 +45,7 @@ Global
 		{BD7FEADA-F1DB-46F3-B8CB-4063EA14FA7F} = {CACAEA30-3818-4FF6-8695-7774571306ED}
 		{317175F8-E8A1-4DAD-801A-00AC2D8848CC} = {CACAEA30-3818-4FF6-8695-7774571306ED}
 		{3040828A-9181-46C7-9A9B-15BC0A3456D2} = {CACAEA30-3818-4FF6-8695-7774571306ED}
+		{C8686CCA-F7F5-4A49-9FDC-36712579536A} = {1331833F-34BB-45C7-8B10-14D81B567420}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {964FD9ED-EA5E-44DB-AA60-856FF53E27FE}
