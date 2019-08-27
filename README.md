@@ -4,8 +4,8 @@
 
 ## Description
 This project aims to create shopping cart and inventory management application via using akka.net actors.
-Akka server is used as distributed command bus with multiple instance of actors and shopping api reaches this actors by akka remote connection.
-For each adding product and purchase actions, warehouse actor checks daily warehouse product limit and product stock limit and if the limits are excess server will return failure
+Akka server is used as distributed command bus with multiple instance of actors.Shopping api reaches this actors by akka remote connection (address is configured in appsettings.json)
+For each adding product and purchase actions, warehouse actor checks daily warehouse product limit and product stock limit and if the limits are excess server will return exception
 
 ## Features
 ##### Framework

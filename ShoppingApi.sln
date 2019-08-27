@@ -15,6 +15,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{1331833F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingApi.AkkaServer.Tests", "tests\ShoppingApi.AkkaServer.Tests\ShoppingApi.AkkaServer.Tests.csproj", "{C8686CCA-F7F5-4A49-9FDC-36712579536A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solutionItems", "solutionItems", "{1A90ED2E-3DB9-4C29-B4B9-1B43B5A57C03}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose-akka-server.yml = docker-compose-akka-server.yml
+		docker-compose.yml = docker-compose.yml
+		Dockerfile = Dockerfile
+		Dockerfile-akka-server = Dockerfile-akka-server
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
